@@ -1,17 +1,43 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!-- <div id="app">
+  </div> -->
+  <div>
+    <v-header :seller="seller"></v-header>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import header from 'components/header/header'
+import { urlParse } from 'common/js/util'
+import { getSeller } from 'api/index'
+
+const ERR_OK = 0
+const debug = process.env.NODE_ENV !== 'production'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    'v-header': header
+  },
+  data () {
+    return {
+      seller: {
+        id: (() => {
+          let queryParam = urlParse()
+          return queryParam.id
+        })()
+      }
+    }
+  },
+  created () {
+    const url = debug ? '/api/seller' : 'http://ustbhuangyi.com/sell/api/seller'
+    getSeller(url + '?id=' + this.seller.id).then(res => {
+      const response = res.data
+      console.log(response)
+      if (response.errno === ERR_OK) {
+        this.seller = Object.assign({}, this.seller, response.data)
+      }
+    })
   }
 }
 </script>
