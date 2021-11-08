@@ -31,7 +31,6 @@ export default {
     const url = debug ? '/api/seller' : 'http://ustbhuangyi.com/sell/api/seller'
     getSeller(url + '?id=' + this.seller.id).then(res => {
       const response = res.data
-      console.log(response)
       if (response.errno === ERR_OK) {
         this.seller = Object.assign({}, this.seller, response.data)
       }

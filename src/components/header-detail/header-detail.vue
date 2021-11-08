@@ -61,9 +61,6 @@ export default {
       visible: false
     }
   },
-  mounted () {
-    console.log(this.seller)
-  },
   methods: {
     show () {
       this.visible = true
