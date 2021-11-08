@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <v-header :seller="seller"></v-header>
+    <Tab/>
   </div>
 </template>
 
@@ -8,6 +9,7 @@
 import VHeader from 'components/v-header/v-header'
 import { urlParse } from 'common/js/util'
 import { getSeller } from 'api/index'
+import Tab from './components/tab/tab.vue'
 
 const ERR_OK = 0
 const debug = process.env.NODE_ENV !== 'production'
@@ -15,7 +17,8 @@ const debug = process.env.NODE_ENV !== 'production'
 export default {
   name: 'app',
   components: {
-    'v-header': VHeader
+    'v-header': VHeader,
+    Tab
   },
   data () {
     return {
