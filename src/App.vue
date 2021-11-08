@@ -1,13 +1,11 @@
 <template>
-  <!-- <div id="app">
-  </div> -->
-  <div>
+  <div id="app">
     <v-header :seller="seller"></v-header>
   </div>
 </template>
 
 <script>
-import header from 'components/header/header'
+import VHeader from 'components/v-header/v-header'
 import { urlParse } from 'common/js/util'
 import { getSeller } from 'api/index'
 
@@ -17,7 +15,7 @@ const debug = process.env.NODE_ENV !== 'production'
 export default {
   name: 'app',
   components: {
-    'v-header': header
+    'v-header': VHeader
   },
   data () {
     return {
@@ -46,7 +44,4 @@ export default {
   font-family 'Avenir', Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
-  margin-top 60px
 </style>
