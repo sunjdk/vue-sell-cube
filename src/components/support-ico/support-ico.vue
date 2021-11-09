@@ -32,6 +32,8 @@ export default {
 .icon-1
   width: 12px
   height: 12px
+  margin-right: 4px
+  vertical-align: top
   background-size: 12px 12px
   &.decrease
     bg-image('decrease_1')

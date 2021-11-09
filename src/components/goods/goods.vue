@@ -36,12 +36,17 @@
         </cube-scroll-nav-panel>
       </cube-scroll-nav>
     </div>
+    <div class="shop-cart-wrapper">
+      <shop-cart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
+    </div>
   </div>
 </template>
 <script>
 import { getGoods } from 'api/index'
+import shopCart from '../shop-cart/shop-cart.vue'
 const ERR_OK = 0
 export default {
+  components: { shopCart },
   name: 'goods',
   props: {
     data: {
@@ -58,6 +63,22 @@ export default {
         click: false,
         directionLockThreshold: 0
       }
+    }
+  },
+  computed: {
+    seller () {
+      return this.data.seller
+    },
+    selectFoods () {
+      let ret = []
+      this.goods.forEach((good) => {
+        good.foods.forEach((food) => {
+          if (food.count) {
+            ret.push(food)
+          }
+        })
+      })
+      return ret
     }
   },
   methods: {
@@ -104,6 +125,12 @@ export default {
     line-height:14px
     font-size:$font-size-small
     background:$color-background-ssss
+    &.cube-scroll-nav-bar-item_active
+      position: relative
+      z-index: 10
+      margin-top: -1px
+      background: #fff
+      font-weight: 700
     .text
       flex: 1
       position: relative
@@ -114,4 +141,62 @@ export default {
     .support-ico
       display: inline-block
       vertical-align: top
+  >>>.cube-sticky
+      .food-item
+        display: flex
+        margin: 18px
+        padding-bottom: 18px
+        border-1px(rgba(7,17,27,0.1))
+        &:last-child
+          border-none()
+          margin-bottom: 0
+        .icon
+          flex: 0 0 57px
+          margin-right: 10px
+        .content
+          flex: 1
+          .name
+            margin:2px 0 8px 0
+            height: 14px
+            line-height: 14px
+            color:rgb(7,17,27)
+          .desc,extra
+            line-height: 10px
+            font size 10px
+            color:rgb(147,153,159)
+          .desc
+            line-height: 12px
+            margin-bottom: 8px
+          .extra
+            .count
+              margin bottom 8px
+          .price
+            font-weight: 700
+            line-height: 24px
+            .now
+              margin-right: 8px
+              font-size: 14px
+              color:rgb(240,20,20)
+            .old
+              text-decoration: line-through
+              font-size: 10px
+              color:rgb(147,153,159)
+          .cartcontrol-wrapper
+            position: absolute
+            right: 0
+            bottom: 12px
+  >>>.cube-sticky-content
+        .cube-scroll-nav-panel-title
+          padding-left: 14px
+          height: 26px
+          line-height: 26px
+          border-left: 2px solid #d9dde1
+          font-size: 12px
+          color:rgb(147,153,159)
+          background: #f3f5f7
+  .shop-cart-wrapper
+    position: absolute
+    bottom: 0
+    background: #000
+    color: #ffffff
 </style>
