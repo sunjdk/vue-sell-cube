@@ -1,27 +1,29 @@
 <template>
-  <div>
-    <div class="shopcart">
-      <div class="content">
-        <div class="content-left">
-          <div class="logo-wrapper">
-            <div class="logo" :class="{'highlight':totalCount>0}">
-              <i class="icon-shopping_cart" :class="{'highlight' :totalCount>0}"></i>
-            </div>
-            <div class="num" v-show="totalCount>0"></div>
+  <div class="shopcart">
+    <div class="content">
+      <div class="content-left">
+        <div class="logo-wrapper">
+          <div class="logo" :class="{'highlight':totalCount>0}">
+            <i class="icon-shopping_cart" :class="{'highlight' :totalCount>0}"></i>
           </div>
-          <div class="price" :class="{'highlight':totalPrice>0}">￥{{totalPrice}}</div>
-          <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
+          <div class="num" v-show="totalCount>0">
+            <bubble :num="totalCount"/>
+          </div>
         </div>
-        <div class="content-right">
-          <div class="pay" :class="payClass">{{payDesc}}</div>
-        </div>
+        <div class="price" :class="{'highlight':totalPrice>0}">￥{{totalPrice}}</div>
+        <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
+      </div>
+      <div class="content-right">
+        <div class="pay" :class="payClass">{{payDesc}}</div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import Bubble from '../bubble/bubble.vue'
 export default {
   name: 'shop-cart',
+  components: { Bubble },
   props: {
     selectFoods: {
       type: Array,
@@ -86,7 +88,7 @@ export default {
   left: 0
   bottom: 0
   z-index: 50
-  width: 100%
+  width: 100vw
   height: 48px
   .content
     display: flex

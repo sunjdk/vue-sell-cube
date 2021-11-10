@@ -1,19 +1,8 @@
 <template>
   <div class="goods">
     <div class="scroll-nav-wrapper">
-      <cube-scroll-nav
-        :side="true"
-        :data="goods"
-        :options="scrollOptions"
-        @change="changeHandler"
-        @sticky-change="stickyChangeHandler"
-        v-if="goods.length"
-      >
-        <cube-scroll-nav-panel
-          v-for="item in goods"
-          :key="item.name"
-          :label="item.name"
-          :title="item.name">
+      <cube-scroll-nav :side="true" :data="goods" :options="scrollOptions" @change="changeHandler" @sticky-change="stickyChangeHandler" v-if="goods.length">
+        <cube-scroll-nav-panel v-for="item in goods" :key="item.name" :label="item.name" :title="item.name">
           <ul>
             <li v-for="food in item.foods" :key="food.name" class="food-item">
               <div class="icon">
@@ -30,6 +19,9 @@
                   <span class="now">￥{{food.price}}</span>
                   <span class="old">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cart-control-wrapper">
+                  <cart-control :food="food"></cart-control>
+                </div>
               </div>
             </li>
           </ul>
@@ -44,9 +36,10 @@
 <script>
 import { getGoods } from 'api/index'
 import shopCart from '../shop-cart/shop-cart.vue'
+import CartControl from '../cart-control/cart-control.vue'
 const ERR_OK = 0
 export default {
-  components: { shopCart },
+  components: { shopCart, CartControl },
   name: 'goods',
   props: {
     data: {
@@ -104,6 +97,7 @@ export default {
 @import "~common/stylus/mixin";
 @import "~common/stylus/variable";
 .goods
+  display: flex
   position: relative
   text-align: left
   height: 100%
