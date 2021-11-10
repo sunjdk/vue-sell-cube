@@ -175,7 +175,7 @@ export default {
               text-decoration: line-through
               font-size: 10px
               color:rgb(147,153,159)
-          .cartcontrol-wrapper
+          .cart-control-wrapper
             position: absolute
             right: 0
             bottom: 12px

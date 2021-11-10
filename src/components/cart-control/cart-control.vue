@@ -69,4 +69,5 @@ export default {
     padding: 6px
     line-height: 24px
     font-size: $fontsize-large-xxx
+    color: #00a0dc;
 </style>
