@@ -20,7 +20,7 @@
                   <span class="old">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cart-control-wrapper">
-                  <cart-control :food="food"></cart-control>
+                  <cart-control :food="food" @add="onAdd"></cart-control>
                 </div>
               </div>
             </li>
@@ -29,7 +29,7 @@
       </cube-scroll-nav>
     </div>
     <div class="shop-cart-wrapper">
-      <shop-cart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
+      <shop-cart ref="shopCart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
     </div>
   </div>
 </template>
@@ -88,6 +88,9 @@ export default {
           this.goods = response.data
         }
       })
+    },
+    onAdd (el) {
+      this.$refs.shopCart.drop(el)
     }
   }
 }

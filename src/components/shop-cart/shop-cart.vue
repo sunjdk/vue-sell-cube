@@ -17,10 +17,30 @@
         <div class="pay" :class="payClass">{{payDesc}}</div>
       </div>
     </div>
+    <div class="ball-container">
+      <div v-for="(ball,index) in balls" :key="index">
+        <transition @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
+            <div class="ball" v-show="ball.show">
+                <div class="inner inner-hook"></div>
+            </div>
+        </transition>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import Bubble from '../bubble/bubble.vue'
+const BALL_LEN = 10
+const innerClsHook = 'inner-hook'
+function createBalls () {
+  let ret = []
+  for (let i = 0; i < BALL_LEN; i++) {
+    ret.push({
+      show: false
+    })
+  }
+  return ret
+}
 export default {
   name: 'shop-cart',
   components: { Bubble },
@@ -75,7 +95,48 @@ export default {
   },
   data () {
     return {
-
+      balls: createBalls()
+    }
+  },
+  created () {
+    this.dropBalls = []
+  },
+  methods: {
+    drop (el) { // el 是 按钮元素，用来取得坐标
+      // console.log(el)
+      for (let i = 0; i < this.balls.length; i++) {
+        const ball = this.balls[i]
+        if (!ball.show) {
+          ball.show = true
+          ball.el = el
+          this.dropBalls.push(ball)
+          return
+        }
+      }
+    },
+    beforeDrop (el) {
+      const ball = this.dropBalls[this.dropBalls.length - 1]
+      const rect = ball.el.getBoundingClientRect()
+      const x = rect.left - 32
+      const y = -(window.innerHeight - rect.top - 22)
+      el.style.display = ''
+      el.style.transform = el.style.webkitTransform = `translate3d(0,${y}px,0)`
+      const inner = el.getElementsByClassName(innerClsHook)[0]
+      inner.transform = inner.style.webkitTransform = `translate3d(${x}px,0,0)`
+    },
+    dropping (el, done) {
+      this._reflow = document.body.offsetHeight // 触发重绘
+      el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
+      const inner = el.getElementsByClassName(innerClsHook)[0]
+      inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`
+      el.addEventListener('transitionend', done)
+    },
+    afterDrop (el) {
+      const ball = this.dropBalls.shift()
+      if (ball) {
+        ball.show = false
+        el.style.display = 'none'
+      }
     }
   }
 }
@@ -180,7 +241,7 @@ export default {
         width: 16px
         height: 16px
         border-radius: 50%
-        background: rgb(0, 160, 220)
+        background: $color-blue
         transition: all 0.4s linear
   .shopcart-list
     position: absolute
