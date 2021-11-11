@@ -1,7 +1,20 @@
 <template>
   <div class="goods">
     <div class="scroll-nav-wrapper">
-      <cube-scroll-nav :side="true" :data="goods" :options="scrollOptions" @change="changeHandler" @sticky-change="stickyChangeHandler" v-if="goods.length">
+      <cube-scroll-nav :side="true" :data="goods" :options="scrollOptions" v-if="goods.length">
+        <template slot="bar" slot-scope="props">
+          <cube-scroll-nav-bar direction="vertical" :labels="props.labels" :txts="barTxts" :current="props.current">
+            <template slot-scope="props">
+              <div class="text">
+                <support-ico v-if="props.txt.type>=1" :size=3 :type="props.txt.type"></support-ico>
+                <span>{{props.txt.name}}</span>
+                <span class="num" v-if="props.txt.count">
+                  <bubble :num="props.txt.count"></bubble>
+                </span>
+              </div>
+            </template>
+          </cube-scroll-nav-bar>
+        </template>
         <cube-scroll-nav-panel v-for="item in goods" :key="item.name" :label="item.name" :title="item.name">
           <ul>
             <li v-for="food in item.foods" :key="food.name" class="food-item">
@@ -37,9 +50,11 @@
 import { getGoods } from 'api/index'
 import shopCart from '../shop-cart/shop-cart.vue'
 import CartControl from '../cart-control/cart-control.vue'
+import Bubble from '../bubble/bubble.vue'
+import SupportIco from '../support-ico/support-ico.vue'
 const ERR_OK = 0
 export default {
-  components: { shopCart, CartControl },
+  components: { shopCart, CartControl, Bubble, SupportIco },
   name: 'goods',
   props: {
     data: {
@@ -72,15 +87,23 @@ export default {
         })
       })
       return ret
+    },
+    barTxts () {
+      let ret = []
+      this.goods.forEach((good) => {
+        const { type, name, foods } = good
+        let count = 0
+        foods.forEach((food) => {
+          count += food.count || 0
+        })
+        ret.push({
+          type, name, count
+        })
+      })
+      return ret
     }
   },
   methods: {
-    changeHandler (label) {
-      console.log('changed to:', label)
-    },
-    stickyChangeHandler (current) {
-      console.log('sticky-change', current)
-    },
     fetch () {
       getGoods().then((res) => {
         const response = res.data
@@ -122,12 +145,6 @@ export default {
     line-height:14px
     font-size:$font-size-small
     background:$color-background-ssss
-    &.cube-scroll-nav-bar-item_active
-      position: relative
-      z-index: 10
-      margin-top: -1px
-      background: #fff
-      font-weight: 700
     .text
       flex: 1
       position: relative
@@ -138,6 +155,13 @@ export default {
     .support-ico
       display: inline-block
       vertical-align: top
+      margin-right:4px
+    &.cube-scroll-nav-bar-item_active
+      position: relative
+      z-index: 10
+      margin-top: -1px
+      background: #fff
+      font-weight: 700
   >>>.cube-sticky
       .food-item
         display: flex
