@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -100,6 +100,7 @@ export default {
   },
   created () {
     this.dropBalls = []
+    this.listFold=true  //控制购物车清单列表组件显示或者收起
   },
   methods: {
     drop (el) { // el 是 按钮元素，用来取得坐标
@@ -137,6 +138,32 @@ export default {
         ball.show = false
         el.style.display = 'none'
       }
+    },
+    toggleList () {
+      if (this.listFold) {
+        if (!this.totalCount) {
+          return
+        }
+        this.listFold = false
+        this._showShopCartList()
+      } else {
+        this.listFold = true
+        this._hideShopCartList()
+      }
+    },
+    _showShopCartList () {
+      this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
+        $props: {
+          selectFoods: 'selectFoods'
+        },
+        $event: {
+          hide: () => { this.listFold = true }
+        }
+      })
+      this.shopCartListComp.show()
+    },
+    _hideShopCartList () {
+      this.shopCartListComp.hide()
     }
   }
 }
@@ -291,12 +318,12 @@ export default {
           font-size: 14px
           font-weight: 700
           color: rgb(240, 20, 20)
-        .cartcontrol-wrapper
+        .cart-control-wrapper
           position: absolute
           right: 0
           bottom: 6px
 
-.list-mask
+.cube-popup-mask
   position: fixed
   top: 0
   left: 0
