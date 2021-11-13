@@ -100,7 +100,7 @@ export default {
   },
   created () {
     this.dropBalls = []
-    this.listFold=true  //控制购物车清单列表组件显示或者收起
+    this.listFold = true // 控制购物车清单列表组件显示或者收起
   },
   methods: {
     drop (el) { // el 是 按钮元素，用来取得坐标
