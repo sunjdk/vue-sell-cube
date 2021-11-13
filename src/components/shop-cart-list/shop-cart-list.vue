@@ -69,10 +69,9 @@ export default {
       this.$emit(EVENT_ADD, target)
     },
     empty () {
-      this.dialogComp = this.dialogComp || this.$createDialog({
+      this.$createDialog({
         type: 'confirm',
-        title: '清空购物车',
-        content: '确认清空吗',
+        content: '清空购物车吗',
         $events: {
           confirm: () => {
             this.selectFoods.forEach((food) => {
@@ -81,8 +80,7 @@ export default {
             this.hide()
           }
         }
-      })
-      this.dialogComp.show()
+      }).show()
     }
   }
 }

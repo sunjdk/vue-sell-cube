@@ -175,11 +175,10 @@ export default {
       if (this.totalPrice < this.minPrice) {
         return
       }
-      this.dialogComp = this.$createDialog({
+      this.$createDialog({
         title: '支付',
         content: `支付${this.totalPrice}`
-      })
-      this.dialogComp.show()
+      }).show()
       e.stopPropagation()
     },
     _showShopCartList () {
