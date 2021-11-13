@@ -12,6 +12,7 @@
     "core-js": "^2.6.5",
     "cube-ui": "~1.12.15",
     "eslint-plugin-standard": "^5.0.0",
+    "moment": "^2.29.1",
     "vue": "^2.6.10"
   },
   "devDependencies": {
