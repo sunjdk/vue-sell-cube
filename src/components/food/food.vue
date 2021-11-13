@@ -36,9 +36,17 @@
           <split></split>
           <div class="rating">
             <h1 class="title">商品评价</h1>
+            <rating-select
+              :ratings="ratings"
+              :onlyContent="onlyContent"
+              :selectType="selectType"
+              :desc="desc"
+              @select="onSelect"
+              @toggle="onToggle"
+            ></rating-select>
             <div class="rating-wrapper">
               <ul v-show="ratings && ratings.length">
-                <li v-for="(rating,index) in ratings" class="rating-item border-bottom-1px" :key="index">
+                <li v-for="(rating,index) in computedRatings" class="rating-item border-bottom-1px" :key="index">
                   <div class="user">
                     <span class="name">{{rating.username}}</span>
                     <img class="avatar" :src="rating.avatar" alt="rating.username" width="12" height="12">
@@ -63,21 +71,48 @@ import Split from 'components/split/split.vue'
 import popupMixin from 'common/mixins/popup'
 import CartControl from 'components/cart-control/cart-control.vue'
 import moment from 'moment'
+import RatingSelect from 'components/rating-select/rating-select.vue'
+
 const EVENT_SHOW = 'show'
 const EVENT_LEAVE = 'leave'
 const EVENT_ADD = 'add'
+const ALL = 2
+
 export default {
   name: 'food',
-  components: { Split, CartControl },
+  components: { Split, CartControl, RatingSelect },
   mixins: [popupMixin],
   props: {
     food: {
       type: Object
     }
   },
+  data () {
+    return {
+      onlyContent: true,
+      selectType: ALL,
+      desc: {
+        all: '全部',
+        positive: '推荐',
+        negative: '吐槽'
+      }
+    }
+  },
   computed: {
     ratings () {
       return this.food.ratings
+    },
+    computedRatings () {
+      let ret = []
+      this.ratings.forEach((rating) => {
+        if (this.onlyContent && !rating.text) {
+          return
+        }
+        if (this.selectType === ALL || this.selectType === rating.rateType) {
+          ret.push(rating)
+        }
+      })
+      return ret
     }
   },
   created () {
@@ -100,6 +135,12 @@ export default {
     },
     format (data) {
       return moment(data).format('YYYY-MM-DD HH:mm:ss')
+    },
+    onSelect (type) {
+      this.selectType = type
+    },
+    onToggle () {
+      this.onlyContent = !this.onlyContent
     }
   }
 }
