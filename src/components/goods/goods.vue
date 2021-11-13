@@ -105,12 +105,15 @@ export default {
   },
   methods: {
     fetch () {
-      getGoods().then((res) => {
-        const response = res.data
-        if (response.errno === ERR_OK) {
-          this.goods = response.data
-        }
-      })
+      if (!this.fetched) {
+        this.fetched = true
+        getGoods().then((res) => {
+          const response = res.data
+          if (response.errno === ERR_OK) {
+            this.goods = response.data
+          }
+        })
+      }
     },
     onAdd (el) {
       this.$refs.shopCart.drop(el)
