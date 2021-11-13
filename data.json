@@ -91,7 +91,7 @@
           "name": "扁豆焖面",
           "price": 14,
           "oldPrice": "20",
-          "description": "",
+          "description": "面食",
           "sellCount": 188,
           "rating": 96,
           "ratings": [
@@ -117,7 +117,7 @@
               "avatar": "http://static.galileo.xiaojukeji.com/static/tms/default_header.png"
             }
           ],
-          "info": "",
+          "info": "扁豆焖面，一种传统面食，是将细面条蒸熟后备用，将肉丝、扁豆放入油锅内炒至变色，加入适量的水，等扁豆六七分熟时，将蒸好的面条放入锅中一起翻炒，等水分蒸干后盛盘即可食用。",
           "icon": "http://fuss10.elemecdn.com/c/6b/29e3d29b0db63d36f7c500bca31d8jpeg.jpeg?imageView2/1/w/114/h/114",
           "image": "http://fuss10.elemecdn.com/c/6b/29e3d29b0db63d36f7c500bca31d8jpeg.jpeg?imageView2/1/w/750/h/750"
         },
@@ -128,7 +128,7 @@
           "description": "",
           "sellCount": 124,
           "rating": 85,
-          "info": "",
+          "info": "葱花饼是一种由面粉和小葱为主要食材的中国煎饼，烹饪简单，味道鲜美，其做法是将香葱切碎与盐，油拌匀，面剂按扁，擀成薄片，加上葱油，卷起，由两头拧挤起来，用手按扁，擀薄，刷油，平锅烙熟即可。做法一 材料准备 面粉，盐，...",
           "ratings": [
             {
               "username": "3******c",

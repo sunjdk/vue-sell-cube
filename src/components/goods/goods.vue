@@ -17,7 +17,7 @@
         </template>
         <cube-scroll-nav-panel v-for="item in goods" :key="item.name" :label="item.name" :title="item.name">
           <ul>
-            <li v-for="food in item.foods" :key="food.name" class="food-item">
+            <li @click="selectFood(food)" v-for="food in item.foods" :key="food.name" class="food-item">
               <div class="icon">
                 <img :src="food.icon" width="57" height="57" alt="food.name">
               </div>
@@ -48,10 +48,11 @@
 </template>
 <script>
 import { getGoods } from 'api/index'
-import shopCart from '../shop-cart/shop-cart.vue'
-import CartControl from '../cart-control/cart-control.vue'
-import Bubble from '../bubble/bubble.vue'
-import SupportIco from '../support-ico/support-ico.vue'
+import shopCart from 'components/shop-cart/shop-cart.vue'
+import CartControl from 'components/cart-control/cart-control.vue'
+import Bubble from 'components/bubble/bubble.vue'
+import SupportIco from 'components/support-ico/support-ico.vue'
+
 const ERR_OK = 0
 export default {
   components: { shopCart, CartControl, Bubble, SupportIco },
@@ -67,6 +68,7 @@ export default {
   data () {
     return {
       goods: [],
+      selectedFood: {},
       scrollOptions: {
         click: false,
         directionLockThreshold: 0
@@ -117,6 +119,37 @@ export default {
     },
     onAdd (el) {
       this.$refs.shopCart.drop(el)
+    },
+    selectFood (food) {
+      this.selectedFood = food
+      this._showFood()
+      this._showShopCartSticky()
+    },
+    _showFood () {
+      this.foodComp = this.foodComp || this.$createFood({
+        $props: {
+          food: 'selectedFood'
+        },
+        $events: {
+          leave: () => { this._hideShopCartList() },
+          add: (el) => { this.shopCartStickyComp.drop(el) }
+        }
+      })
+      this.foodComp.show()
+    },
+    _showShopCartSticky () {
+      this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+        $props: {
+          selectFoods: 'selectFoods',
+          deliveryPrice: this.seller.deliveryPrice,
+          minPrice: this.seller.minPrice,
+          fold: true
+        }
+      })
+      this.shopCartStickyComp.show()
+    },
+    _hideShopCartList () {
+      this.shopCartStickyComp.hide()
     }
   }
 }
