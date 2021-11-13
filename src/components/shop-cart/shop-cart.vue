@@ -14,7 +14,7 @@
         <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
       </div>
       <div class="content-right">
-        <div class="pay" :class="payClass">{{payDesc}}</div>
+        <div @click="pay" class="pay" :class="payClass">{{payDesc}}</div>
       </div>
     </div>
     <div class="ball-container">
@@ -110,6 +110,11 @@ export default {
   watch: {
     fold (newVal) {
       this.listFold = newVal
+    },
+    totalCount (newVal) {
+      if (!this.listFold && !newVal) {
+        this._hideShopCartList()
+      }
     }
   },
   created () {
@@ -166,13 +171,26 @@ export default {
         this._hideShopCartList()
       }
     },
+    pay (e) {
+      if (this.totalPrice < this.minPrice) {
+        return
+      }
+      this.dialogComp = this.$createDialog({
+        title: '支付',
+        content: `支付${this.totalPrice}`
+      })
+      this.dialogComp.show()
+      e.stopPropagation()
+    },
     _showShopCartList () {
       this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
         $props: {
           selectFoods: 'selectFoods'
         },
-        $event: {
-          hide: () => { this.listFold = true }
+        $events: {
+          hide: () => { this.listFold = true },
+          leave: () => { this._hideShopCartSticky() },
+          add: (el) => { this.shopCartStickyComp.drop(el) }
         }
       })
       this.shopCartListComp.show()
@@ -186,9 +204,8 @@ export default {
           fold: 'listFold',
           list: this.shopCartListComp
         },
-        $event: {
-          hide: () => { this.listFold = true },
-          leave: () => { this._hideShopCartSticky() }
+        $events: {
+          hide: () => { this.listFold = true }
         }
       })
       this.shopCartStickyComp.show()
