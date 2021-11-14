@@ -9,12 +9,13 @@
 
 <script>
 import VHeader from 'components/v-header/v-header'
-import { urlParse } from 'common/js/util'
+// import { urlParse } from 'common/js/util'
 import { getSeller } from 'api/index'
 import Tab from './components/tab/tab.vue'
 import Goods from 'components/goods/goods.vue'
 import Ratings from 'components/ratings/ratings.vue'
 import Seller from 'components/seller/seller.vue'
+import qs from 'query-string'
 
 const ERR_OK = 0
 const debug = process.env.NODE_ENV !== 'production'
@@ -55,16 +56,14 @@ export default {
   data () {
     return {
       seller: {
-        id: (() => {
-          let queryParam = urlParse()
-          return queryParam.id
-        })()
+        id: qs.parse(location.search).id
       }
     }
   },
   created () {
-    const url = debug ? '/api/seller' : 'http://ustbhuangyi.com/sell/api/seller'
-    getSeller(url + '?id=' + this.seller.id).then(res => {
+    // const url = debug ? '/api/seller' : 'http://ustbhuangyi.com/sell/api/seller'
+    // url + '?id=' + this.seller.id
+    getSeller({ id: this.seller.id }).then(res => {
       const response = res.data
       if (response.errno === ERR_OK) {
         this.seller = Object.assign({}, this.seller, response.data)

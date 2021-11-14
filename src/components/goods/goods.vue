@@ -109,7 +109,7 @@ export default {
     fetch () {
       if (!this.fetched) {
         this.fetched = true
-        getGoods().then((res) => {
+        getGoods({ id: this.seller.id }).then((res) => {
           const response = res.data
           if (response.errno === ERR_OK) {
             this.goods = response.data

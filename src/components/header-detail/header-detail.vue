@@ -62,7 +62,7 @@ export default {
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixin"
-  @import "../../common/stylus/variable";
+  @import "~common/stylus/variable"
   .header-detail
     position: fixed
     z-index: 100
