@@ -18,7 +18,7 @@ import Seller from 'components/seller/seller.vue'
 import qs from 'query-string'
 
 const ERR_OK = 0
-const debug = process.env.NODE_ENV !== 'production'
+// const debug = process.env.NODE_ENV !== 'production'
 
 export default {
   name: 'app',
