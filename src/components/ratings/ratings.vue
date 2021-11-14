@@ -1,5 +1,5 @@
 <template>
-  <cube-scroll class="ratings" :options="scrollOptions">
+  <cube-scroll class="ratings" :data="computedRatings" :options="scrollOptions">
     <div class="ratings-content">
       <div class="overview">
         <div class="overview-left">
@@ -25,9 +25,17 @@
         </div>
       </div>
       <split></split>
+      <rating-select
+        :ratings="ratings"
+        :onlyContent="onlyContent"
+        :selectType="selectType"
+        @select="onSelect"
+        @toggle="onToggle"
+        v-if="ratings.length"
+      ></rating-select>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="(rating,index) in ratings" :key="index" class="rating-item border-bottom-1px">
+          <li v-for="(rating,index) in computedRatings" :key="index" class="rating-item border-bottom-1px">
             <div class="avatar">
               <img :src="rating.avatar" width="28" height="28" alt="">
             </div>
@@ -57,12 +65,16 @@ import moment from 'moment'
 import star from 'components/star/star.vue'
 import Split from 'components/split/split.vue'
 import { getRatings } from 'api/index'
+import RatingSelect from 'components/rating-select/rating-select.vue'
+
+import ragingMixin from 'common/mixins/rating'
 
 const ERR_OK = 0
 
 export default {
   name: 'ratings',
-  components: { star, Split },
+  mixins: [ragingMixin],
+  components: { star, Split, RatingSelect },
   props: {
     data: {
       type: Object
